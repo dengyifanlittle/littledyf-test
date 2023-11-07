@@ -1,0 +1,59 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: service-gateway
+  cloud: # 配置Spring Cloud相关属性
+    gateway:
+      discovery: # 配置网关发现机制
+        locator: # 配置处理机制
+          enabled: false # 开启网关自动映射处理逻辑
+          lower-case-service-id: true # 开启小写转换
+      filter:
+        secure-headers:
+          disable:
+            - strict-transport-security
+            - x-download-options
+      routes: # 配置网关中的一个完整路由，包括命名，地址，谓词集合（规则），过滤器集合
+        - id: service-one # 路由定义的命名，唯一即可。命名规则符合Java中的变量符命名规则
+          uri: lb://service-one # 当前路由定义对应的微服务转发地址,lb - 代表loadbalance
+          predicates: # 配置谓词集合
+            - Path=/service/**
+          filters:
+            - StripPrefix=1
+            - MyTwo=api
+            - name: RequestRateLimiter
+              args:
+                keyResolver: '#{@myKeyResolver}' #使用springEL表达式，从spring容器中找对象，并赋值。'#{@beanName}'
+                redis-rate-limiter.replenishRate: 1 #生产令牌速度，每秒多少个令牌
+                redis-rate-limiter.burstCapacity: 50 # 令牌桶容量
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        server-addr: 127.0.0.1
+        group: dev
+        namespace: dev
+        metadata:
+          version: v1.0.0
+    sentinel:
+      transport:
+        # 服务监控端口
+        dashboard: localhost:25000
+        # 默认 8719，假如被占用了会自动从 8719 开始依次 +1 扫描，直至找到未被占用的端口
+        port: 8719
+    redis:
+      database: 0
+      host: ${127.0.0.1}
+      port: ${6379}
+      password:
+      lettuce:
+        pool:
+          max-active: 80
+          max-idle: 80
+          min-idle: 1
+          max-wait: 5000
+          time-between-eviction-runs: 1m
+        shutdown-timeout: 10000ms
+      timeout: 15000ms
+
