@@ -22,7 +22,7 @@ public class MyOneGatewayFilter implements GatewayFilter, Ordered {
         // 获取请求路径
         String path = exchange.getRequest().getPath().toString();
         URI uri = exchange.getRequest().getURI();
-        System.err.println(String.format("获取到请求路径：%s", uri.toString()));
+        System.err.println(String.format("获取到请求路径：%s", uri));
         // 如果请求路径以“/v1”开头，则截取掉第一个路径段
         if (path.startsWith("/v1")) {
             path = path.substring("/v1".length());
@@ -44,6 +44,6 @@ public class MyOneGatewayFilter implements GatewayFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return 1;
     }
 }

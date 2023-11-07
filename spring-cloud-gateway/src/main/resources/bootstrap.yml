@@ -21,7 +21,7 @@ spring:
             - Path=/service/**
           filters:
             - StripPrefix=1
-            - MyTwo=api
+#            - MyTwo=api
             - name: RequestRateLimiter
               args:
                 keyResolver: '#{@myKeyResolver}' #使用springEL表达式，从spring容器中找对象，并赋值。'#{@beanName}'
