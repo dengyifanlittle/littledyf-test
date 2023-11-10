@@ -23,11 +23,11 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
         System.err.println(String.format("全局过滤器获取到请求路径：%s", exchange.getRequest().getURI()));
         String test = exchange.getRequest().getHeaders().getFirst("test");
         // 无test请求头
-        if (!Optional.ofNullable(test).isPresent()) {
-            System.err.println("无指定请求头");
-            exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);
-            return exchange.getResponse().setComplete();
-        }
+//        if (!Optional.ofNullable(test).isPresent()) {
+//            System.err.println("无指定请求头");
+//            exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);
+//            return exchange.getResponse().setComplete();
+//        }
         System.err.println(String.format("请求头参数:%s", test));
         return chain.filter(exchange);
     }

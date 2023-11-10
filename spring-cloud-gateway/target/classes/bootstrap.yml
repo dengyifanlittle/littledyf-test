@@ -21,12 +21,12 @@ spring:
             - Path=/service/**
           filters:
             - StripPrefix=1
-#            - MyTwo=api
-            - name: RequestRateLimiter
-              args:
-                keyResolver: '#{@myKeyResolver}' #使用springEL表达式，从spring容器中找对象，并赋值。'#{@beanName}'
-                redis-rate-limiter.replenishRate: 1 #生产令牌速度，每秒多少个令牌
-                redis-rate-limiter.burstCapacity: 50 # 令牌桶容量
+#            - MyTwo=api #自定义过滤器
+#            - name: RequestRateLimiter
+#              args:
+#                keyResolver: '#{@myKeyResolver}' #使用springEL表达式，从spring容器中找对象，并赋值。'#{@beanName}'
+#                redis-rate-limiter.replenishRate: 1 #生产令牌速度，每秒多少个令牌
+#                redis-rate-limiter.burstCapacity: 50 # 令牌桶容量
     nacos:
       username: nacos
       password: nacos
@@ -37,11 +37,14 @@ spring:
         metadata:
           version: v1.0.0
     sentinel:
+#      filter:
+#        enabled: false
       transport:
         # 服务监控端口
         dashboard: localhost:25000
         # 默认 8719，假如被占用了会自动从 8719 开始依次 +1 扫描，直至找到未被占用的端口
         port: 8719
+      web-context-unify: false
     redis:
       database: 0
       host: ${127.0.0.1}

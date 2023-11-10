@@ -15,7 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class NacosTestController {
 
     @GetMapping("/test")
-    public String test(){
+    public String test() {
+
         return "8099";
+    }
+
+    @GetMapping("/test-one")
+    public String testOne() {
+
+        return "8099-one";
+    }
+
+
+    @GetMapping("/test-two")
+    public String testTwo() {
+
+        return "8099-two";
     }
 }
